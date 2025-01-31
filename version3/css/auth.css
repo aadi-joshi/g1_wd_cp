@@ -1,0 +1,25 @@
+.auth-container {
+    background: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-switch {
+    cursor: pointer;
+    color: #0d6efd;
+}
+
+.form-switch:hover {
+    text-decoration: underline;
+}
