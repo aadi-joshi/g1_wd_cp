@@ -1,14 +1,23 @@
 class BillingSystem {
     constructor() {
+        /* User authentication check
+         * Retrieves user data from localStorage
+         * Redirects to auth if not logged in
+         */
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!this.currentUser) window.location.href = 'auth.html';
 
+        // Initialize product array and setup
         this.products = [];
         this.loadFromLocalStorage();
         this.initializeEvents();
         this.updateInvoiceNumber();
     }
 
+    /* Event binding
+     * Uses jQuery for DOM manipulation
+     * Handles product addition, bill generation and item removal
+     */
     initializeEvents() {
         $('#addProduct').click(() => this.addProduct());
         $('#generateBill').click(() => this.generateBill());
@@ -16,6 +25,10 @@ class BillingSystem {
     }
 
     addProduct() {
+        /* Product object creation
+         * Retrieves values from form inputs
+         * Converts string values to appropriate types
+         */
         const product = {
             name: $('#productName').val(),
             price: parseFloat($('#productPrice').val()),
@@ -23,6 +36,7 @@ class BillingSystem {
             gst: parseFloat($('#gstRate').val())
         };
 
+        // Validate and add product
         if (this.validateProduct(product)) {
             this.products.push(product);
             this.updateDisplay();
@@ -47,11 +61,17 @@ class BillingSystem {
         return true;
     }
 
+    /* UI Update Process
+     * Clears existing items list
+     * Recalculates all totals
+     * Updates DOM with new values
+     */
     updateDisplay() {
         $('#itemsList').empty();
         let subtotal = 0;
         let totalGst = 0;
 
+        // Calculate totals and display each product
         this.products.forEach((product, index) => {
             const total = product.price * product.qty;
             const gstAmount = (total * product.gst) / 100;
@@ -59,6 +79,7 @@ class BillingSystem {
             subtotal += total;
             totalGst += gstAmount;
 
+            // Add product row to table
             $('#itemsList').append(`
                 <tr>
                     <td>${product.name}</td>
@@ -71,6 +92,7 @@ class BillingSystem {
             `);
         });
 
+        // Update summary totals
         $('#subtotal').text(`₹${subtotal.toFixed(2)}`);
         $('#cgst').text(`₹${(totalGst / 2).toFixed(2)}`);
         $('#sgst').text(`₹${(totalGst / 2).toFixed(2)}`);
@@ -84,6 +106,12 @@ class BillingSystem {
         this.saveToLocalStorage();
     }
 
+    /* Bill Generation Process
+     * Collects all form data
+     * Creates bill object
+     * Saves to user history
+     * Triggers PDF generation
+     */
     generateBill() {
         if (this.products.length === 0) {
             alert('Please add items to generate bill');
@@ -180,7 +208,9 @@ class BillingSystem {
         this.saveToLocalStorage();
     }
 
+    /* Local Storage Operations */
     saveToLocalStorage() {
+        // Saves current billing session data
         localStorage.setItem('billingData', JSON.stringify({
             products: this.products,
             customer: $('#customerName').val(),
@@ -189,6 +219,7 @@ class BillingSystem {
     }
 
     loadFromLocalStorage() {
+        // Retrieves and restores previous session data
         const data = JSON.parse(localStorage.getItem('billingData'));
         if (data) {
             this.products = data.products || [];
@@ -198,6 +229,11 @@ class BillingSystem {
         }
     }
 
+    /* User Data Update Process
+     * Gets all users from storage
+     * Updates current user's data
+     * Saves back to localStorage
+     */
     saveUserData() {
         const users = JSON.parse(localStorage.getItem('gstUsers'));
         const index = users.findIndex(u => u.email === this.currentUser.email);
@@ -212,13 +248,12 @@ class BillingSystem {
     }
 }
 
-// Initialize billing system
-let billingSystem;
+// Initialize system on page load
 $(document).ready(() => {
     billingSystem = new BillingSystem();
 });
 
-// Global logout function
+// Logout handler
 function logout() {
     billingSystem.logout();
 }

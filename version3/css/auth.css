@@ -1,25 +1,41 @@
+/* Authentication page container */
 .auth-container {
+    /* Light gray background */
     background: #f0f2f5;
+    /* Full viewport height */
     min-height: 100vh;
+    /* Center content vertically and horizontally */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/* Authentication form box */
 .auth-box {
+    /* White background for form */
     background: white;
+    /* Comfortable padding */
     padding: 2rem;
+    /* Rounded corners */
     border-radius: 10px;
+    /* Subtle shadow for depth */
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    /* Responsive width */
     width: 100%;
+    /* Maximum width constraint */
     max-width: 400px;
 }
 
+/* Form switch link styling */
 .form-switch {
+    /* Clickable pointer */
     cursor: pointer;
+    /* Bootstrap primary blue */
     color: #0d6efd;
 }
 
+/* Form switch link hover effect */
 .form-switch:hover {
+    /* Underline on hover */
     text-decoration: underline;
 }
