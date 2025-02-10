@@ -86,14 +86,14 @@ gst-billing/
 ## **Team Roles**
 The project is divided into **6 roles**, each with specific responsibilities:
 
-| Role                          | Assigned to                   | Responsibilities                                                                 |
-|-------------------------------|-------------------------------|----------------------------------------------------------------------------------|
-| **Project Lead**              | Aadi                          | Oversees the entire project, ensures deadlines are met, and coordinates the team.|
-| **Frontend Developer**        | Anas                          | Implements the HTML structure and ensures responsive design.                     |
-| **CSS Styling Expert**        | Shambhavi                     | Designs and maintains the CSS for both authentication and billing interfaces.    |
-| **JavaScript Developer**      | Sachin                        | Develops core functionality (authentication, billing logic, GST calculations).   |
-| **PDF Generation Specialist** | Manav                         | Implements PDF generation using jsPDF.                                           |
-| **Testing & Debugging Lead**  | Sujal                         | Tests the application, identifies bugs, and ensures smooth functionality.        |
+| Role                            | Assigned to                   | Responsibilities                                                                                            |
+|---------------------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------|
+| **JavaScript Developer/Hosting**| Aadi                          | Develops core functionality (authentication, billing logic, GST calculations) and hosts the app on Vercel   |
+| **Frontend Developer**          | Anas                          | Implements the HTML structure and ensures responsive design.                                                |
+| **CSS Styling Expert**          | Shambhavi                     | Designs and maintains the CSS for both authentication and billing interfaces.                               |
+| **Base Code Creation**          | Aadi                          | Creates the base code for the files                                                                         |
+| **PDF Generation**              | Manav                         | Implements PDF generation using jsPDF.                                                                      |
+| **Testing & Debugging Lead**    | Sujal                         | Tests the application, identifies bugs, and ensures smooth functionality.                                   |
 
 ---
 
