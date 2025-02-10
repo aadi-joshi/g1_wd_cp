@@ -91,7 +91,7 @@ The project is divided into **6 roles**, each with specific responsibilities:
 | **JavaScript Developer/Hosting**| Aadi                          | Develops core functionality (authentication, billing logic, GST calculations) and hosts the app on Vercel   |
 | **Frontend Developer**          | Anas                          | Implements the HTML structure and ensures responsive design.                                                |
 | **CSS Styling Expert**          | Shambhavi                     | Designs and maintains the CSS for both authentication and billing interfaces.                               |
-| **Base Code Creation**          | Aadi                          | Creates the base code for the files                                                                         |
+| **Base Code Creation**          | Sachin                        | Creates the base code for the files. Lays down the layout for the page                                      |
 | **PDF Generation**              | Manav                         | Implements PDF generation using jsPDF.                                                                      |
 | **Testing & Debugging Lead**    | Sujal                         | Tests the application, identifies bugs, and ensures smooth functionality.                                   |
 
