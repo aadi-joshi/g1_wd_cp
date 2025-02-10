@@ -5,7 +5,7 @@ class UserManager {
 
     register(shop, email, password, gstin) {
         if (this.validateGSTIN(gstin) && this.validateEmail(email) && this.validatePassword(password)) {
-            this.users.push({
+            this.users.push({   
                 shop,
                 email,
                 password,

@@ -1,23 +1,16 @@
 class BillingSystem {
     constructor() {
-        /* User authentication check
-         * Retrieves user data from localStorage
-         * Redirects to auth if not logged in
-         */
+        // redirects user if they arent logged in
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!this.currentUser) window.location.href = 'auth.html';
-
-        // Initialize product array and setup
         this.products = [];
         this.loadFromLocalStorage();
         this.initializeEvents();
         this.updateInvoiceNumber();
     }
 
-    /* Event binding
-     * Uses jQuery for DOM manipulation
-     * Handles product addition, bill generation and item removal
-     */
+    // product addition, bill generation, item removal
+    // jquery for dom manipulation
     initializeEvents() {
         $('#addProduct').click(() => this.addProduct());
         $('#generateBill').click(() => this.generateBill());
@@ -25,10 +18,9 @@ class BillingSystem {
     }
 
     addProduct() {
-        /* Product object creation
-         * Retrieves values from form inputs
-         * Converts string values to appropriate types
-         */
+        // this method creates product object
+        // takes the value from form inputs
+        // also used for input type conversion
         const product = {
             name: $('#productName').val(),
             price: parseFloat($('#productPrice').val()),
@@ -36,7 +28,7 @@ class BillingSystem {
             gst: parseFloat($('#gstRate').val())
         };
 
-        // Validate and add product
+        // below block validates and adds the code
         if (this.validateProduct(product)) {
             this.products.push(product);
             this.updateDisplay();
@@ -61,17 +53,10 @@ class BillingSystem {
         return true;
     }
 
-    /* UI Update Process
-     * Clears existing items list
-     * Recalculates all totals
-     * Updates DOM with new values
-     */
     updateDisplay() {
         $('#itemsList').empty();
         let subtotal = 0;
         let totalGst = 0;
-
-        // Calculate totals and display each product
         this.products.forEach((product, index) => {
             const total = product.price * product.qty;
             const gstAmount = (total * product.gst) / 100;
@@ -79,7 +64,7 @@ class BillingSystem {
             subtotal += total;
             totalGst += gstAmount;
 
-            // Add product row to table
+            // add product row to table
             $('#itemsList').append(`
                 <tr>
                     <td>${product.name}</td>
@@ -92,7 +77,7 @@ class BillingSystem {
             `);
         });
 
-        // Update summary totals
+        // update summary totals
         $('#subtotal').text(`₹${subtotal.toFixed(2)}`);
         $('#cgst').text(`₹${(totalGst / 2).toFixed(2)}`);
         $('#sgst').text(`₹${(totalGst / 2).toFixed(2)}`);
@@ -106,12 +91,9 @@ class BillingSystem {
         this.saveToLocalStorage();
     }
 
-    /* Bill Generation Process
-     * Collects all form data
-     * Creates bill object
-     * Saves to user history
-     * Triggers PDF generation
-     */
+    // takes input from forms
+    // creates bill object
+    // initiated bill generation process
     generateBill() {
         if (this.products.length === 0) {
             alert('Please add items to generate bill');
@@ -128,47 +110,33 @@ class BillingSystem {
             sgst: parseFloat($('#sgst').text().replace('₹', '')),
             total: parseFloat($('#grandTotal').text().replace('₹', ''))
         };
-
-        // Save bill to user's history
         this.currentUser.bills.push(billData);
         this.saveUserData();
-
-        // Generate PDF
-        this.generatePDF(billData);
+        this.generatePDF(billData); // this is where pdf is generated
         alert('Bill generated successfully! PDF will download automatically.');
         this.clearAll();
     }
 
     generatePDF(billData) {
         const doc = new jspdf.jsPDF();
-        
-        // Add logo
-        const img = new Image();
+        const img = new Image(); // logo
         img.src = 'assets/logo.png';
         doc.addImage(img, 'PNG', 10, 10, 50, 20);
-
-        // Header
         doc.setFontSize(22);
         doc.text(`INVOICE #${billData.number}`, 110, 20);
         
-        // Shop Info
+        // shop and customer Info
         doc.setFontSize(12);
         doc.text(`${this.currentUser.shop}`, 10, 35);
         doc.text(`GSTIN: ${this.currentUser.gstin}`, 10, 40);
-
-        // Customer Info
         doc.text(`Customer: ${billData.customer}`, 10, 50);
         doc.text(`Date: ${new Date(billData.date).toLocaleDateString()}`, 10, 55);
-
-        // Table Header
-        let y = 70;
+        let y = 70; // table header and rows
         doc.setFontSize(14);
         doc.text('Product', 10, y);
         doc.text('Price', 60, y);
         doc.text('Qty', 90, y);
         doc.text('Total', 120, y);
-        
-        // Table Rows
         doc.setFontSize(12);
         billData.products.forEach(product => {
             y += 10;
@@ -177,8 +145,6 @@ class BillingSystem {
             doc.text(product.qty.toString(), 90, y);
             doc.text(`₹${(product.price * product.qty).toFixed(2)}`, 120, y);
         });
-
-        // Totals
         y += 20;
         doc.setFontSize(14);
         doc.text(`Subtotal: ₹${billData.subtotal.toFixed(2)}`, 10, y);
@@ -208,9 +174,9 @@ class BillingSystem {
         this.saveToLocalStorage();
     }
 
-    /* Local Storage Operations */
     saveToLocalStorage() {
-        // Saves current billing session data
+        // starting from this all are local storage functions
+        // this function saves current billing session data
         localStorage.setItem('billingData', JSON.stringify({
             products: this.products,
             customer: $('#customerName').val(),
@@ -219,7 +185,7 @@ class BillingSystem {
     }
 
     loadFromLocalStorage() {
-        // Retrieves and restores previous session data
+        // retrieves and restores previous session data
         const data = JSON.parse(localStorage.getItem('billingData'));
         if (data) {
             this.products = data.products || [];
@@ -229,11 +195,6 @@ class BillingSystem {
         }
     }
 
-    /* User Data Update Process
-     * Gets all users from storage
-     * Updates current user's data
-     * Saves back to localStorage
-     */
     saveUserData() {
         const users = JSON.parse(localStorage.getItem('gstUsers'));
         const index = users.findIndex(u => u.email === this.currentUser.email);
@@ -248,12 +209,11 @@ class BillingSystem {
     }
 }
 
-// Initialize system on page load
 $(document).ready(() => {
     billingSystem = new BillingSystem();
 });
 
-// Logout handler
+// handles logout
 function logout() {
     billingSystem.logout();
 }
